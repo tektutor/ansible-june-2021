@@ -29,6 +29,20 @@ docker pull ubuntu:16.04
 ```
 docker run hello-world:latest
 ```
+#### Creating a container in foreground(interactive) mode
+```
+docker run -it --name ubuntu1 --hostname ubuntu1 ubuntu:18.04 /bin/bash
+```
+
+#### Creating a container in background(deattached/daemon) mode
+```
+docker run -dit --name ubuntu2 --hostname ubuntu2 ubuntu:18.04 /bin/bash
+```
+
+#### Opening a shell inside a running container
+```
+docker exec -it ubuntu2 /bin/bash
+```
 
 #### Listing the currently running docker containers 
 ```

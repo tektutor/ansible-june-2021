@@ -94,3 +94,23 @@ docker rm -f ubuntu1
 docker inspect ubuntu1 | grep IPA
 docker inspect -f {{.NetworkSettings.IPAddress}} ubuntu1
 ```
+#### Creating a custom Docker ubuntu image with vim tree git installed
+You need to create a Dockerfile as shown below
+```
+FROM ubuntu:18.04
+MAINTAINER Jeganathan Swaminathan <jegan@tektutor.org>
+
+RUN apt-get update && apt-get install -y git vim tree
+```
+
+You may now build your custom image as shown below
+```
+docker build -t tektutor/custom-ubuntu .
+```
+
+You may verify if your custom docker images is in local docker registry
+```
+docker images
+```
+
+

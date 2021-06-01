@@ -89,4 +89,8 @@ docker stop ubuntu1 && docker rm ubuntu1
 docker rm -f ubuntu1
 ```
 
-
+#### Finding IP address of a container
+```
+docker inspect ubuntu1 | grep IPA
+docker inspect -f {{.NetworkSettings.IPAddress}} ubuntu1
+```

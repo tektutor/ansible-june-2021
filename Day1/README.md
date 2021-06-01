@@ -128,4 +128,48 @@ You may verify if your custom docker images is in local docker registry
 docker images
 ```
 
+#### Volume Mounting - persisting data outside container
+```
+docker run -d --name mysql1 --hostname mysql1 -v /tmp/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+```
 
+Try getting inside the mysql1 container
+```
+docker exec -it mysql1 bash
+```
+
+Try to connect to the mysql server, when prompted for password type 'root'
+```
+mysql -u root -p
+```
+
+Try creating database, table and few records into the table
+```
+CREATE DATABASE tektutor;
+USE tektutor;
+CREATE TABLE training ( id INT, name VARCHAR(25), duration VARCHAR(25 ) );
+INSERT INTO training VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO training VALUES ( 2, "Kubernetes", "5 Days" );
+INSERT INTO training VALUES ( 3, "Ansible", "5 Days" );
+```
+
+Now comeout of mysql1 container and delete the mysql1 container
+```
+exit
+exit
+docker rm -f mysql1
+```
+
+Recreate a new container as shown below
+```
+docker run -d --name mysql2 --hostname mysql2 -v /tmp/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+```
+
+Get inside the new container, you should be able to see the tektutor and training table and its data intact.
+```
+docker exec -it mysql2 bash 
+mysql -u root -p
+SHOW DATABASES;
+USE tektutor;
+SELECT * FROM training;
+```

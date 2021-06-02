@@ -36,8 +36,9 @@ cp /home/jegan/.ssh/id_rsa.pub centos-ansible/authorized_keys
 ```
 
 ### Building Ansible Ubuntu Docker Image
+The assumption is you are under ansible-june-2021/Day2/ansible-docker-images folder.
 ```
-docker build -t tektutor/ansible-ubuntu ubuntu-ansible
+docker build -t tektutor/ansible-ubuntu ubuntu-ansible 
 docker build -t tektutor/ansible-centos centos-ansible
 ```
 

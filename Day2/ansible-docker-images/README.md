@@ -83,3 +83,13 @@ ssh -p 2003 root@localhost
 ssh -p 2004 root@localhost
 ```
 
+### Creating static inventory file, you may name it as hosts
+```
+[all]
+ubuntu1 ansible_user=root ansible_host=localhost ansible_port=2001 ansible_private_key_file=/root/.ssh/id_rsa
+ubuntu2 ansible_user=root ansible_host=localhost ansible_port=2002 ansible_private_key_file=/root/.ssh/id_rsa
+centos1 ansible_user=root ansible_host=localhost ansible_port=2003 ansible_private_key_file=/root/.ssh/id_rsa
+centos2 ansible_user=root ansible_host=localhost ansible_port=2004 ansible_private_key_file=/root/.ssh/id_rsa
+```
+
+

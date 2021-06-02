@@ -90,6 +90,32 @@ ubuntu1 ansible_user=root ansible_host=localhost ansible_port=2001 ansible_priva
 ubuntu2 ansible_user=root ansible_host=localhost ansible_port=2002 ansible_private_key_file=/root/.ssh/id_rsa
 centos1 ansible_user=root ansible_host=localhost ansible_port=2003 ansible_private_key_file=/root/.ssh/id_rsa
 centos2 ansible_user=root ansible_host=localhost ansible_port=2004 ansible_private_key_file=/root/.ssh/id_rsa
+
+[ubuntu]
+ubuntu[1:2]
+
+[centos]
+centos[1:2]
+
+```
+
+### Ansible ad-hoc 
+```
+ansible -i hosts all -m ping
+ansible -i hosts ubuntu1 -m ping -vvvv
+ansible -i hosts ubuntu -m ping
+ansible -i hosts centos -m ping
 ```
 
 
+### What happens when you run the below command
+```
+ansible -i hosts ubuntu1 -m ping
+```
+
+1. First ansible will do an ssh to the ansible node "ubuntu1" using the details given in hosts inventory file.
+2. Ansible creates a temporary folder in ACM and Ansible node
+3. Ansible uses sftp/scp to copy the ping.py ansible module from ACM tmp to Ansible node tmp folder
+4. Ansible executes the copied ping.py on the Ansible Node and captures the output
+5. Ansible removes the tmp folder created locally in ACM and the Ansible Node
+6. Prints a summary of output in the ACM

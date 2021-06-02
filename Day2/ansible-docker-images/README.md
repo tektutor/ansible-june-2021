@@ -1,3 +1,5 @@
+## Setting up your Ansible Controller Machine
+
 ### Installing Docker in CentOS
 ```
 sudo yum install -y yum-utils
@@ -9,7 +11,6 @@ sudo systemctl enable docker
 sudo usermod -aG docker jegan
 sudo su jegan
 ```
-
 You need to edit /usr/lib/systemd/system/docker.service as shown below 
 ```
 ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:4243
@@ -19,29 +20,6 @@ You need to restart docker service as shown below
 systemctl daemon-reload
 systemctl restart docker
 ```
-
-### Building Custom Ansible Node Docker Images
-
-#### You need to generate ssh keys as regular user(non-admin)
-```
-ssh-keygen
-```
-Accept all defaults by hitting Enter key.
-
-The generated public key of that user must be copied into ubuntu-ansible and centos-ansible folders as shown below
-```
-cd ansible-june-2021/Day2/ansible-docker-images
-cp /home/jegan/.ssh/id_rsa.pub ubuntu-ansible/authorized_keys
-cp /home/jegan/.ssh/id_rsa.pub centos-ansible/authorized_keys
-```
-
-### Building Ansible Ubuntu Docker Image
-The assumption is you are under ansible-june-2021/Day2/ansible-docker-images folder.
-```
-docker build -t tektutor/ansible-ubuntu ubuntu-ansible 
-docker build -t tektutor/ansible-centos centos-ansible
-```
-
 ### Installing Python 3.8.3
 ```
 sudo yum -y update
@@ -66,3 +44,42 @@ Choose the serial number under which Python 3.8.3 is listed.
 sudo python -m pip install ansible-core
 ansible --version
 ```
+
+## Building Custom Ansible Node Docker Images
+
+### You need to generate ssh keys as regular user(non-admin)
+```
+ssh-keygen
+```
+Accept all defaults by hitting Enter key.
+
+The generated public key of that user must be copied into ubuntu-ansible and centos-ansible folders as shown below
+```
+cd ansible-june-2021/Day2/ansible-docker-images
+cp /home/jegan/.ssh/id_rsa.pub ubuntu-ansible/authorized_keys
+cp /home/jegan/.ssh/id_rsa.pub centos-ansible/authorized_keys
+```
+
+### Building Ansible Ubuntu Docker Image
+The assumption is you are under ansible-june-2021/Day2/ansible-docker-images folder.
+```
+docker build -t tektutor/ansible-ubuntu ubuntu-ansible 
+docker build -t tektutor/ansible-centos centos-ansible
+```
+
+### Creating containers
+```
+docker run -d --name ubuntu1 --hostname ubuntu1 -p 2001:22 -p 8001:80 tektutor/ansible-ubuntu
+docker run -d --name ubuntu2 --hostname ubuntu2 -p 2002:22 -p 8002:80 tektutor/ansible-ubuntu
+docker run -d --name centos1 --hostname centos1 -p 2003:22 -p 8003:80 tektutor/ansible-ubuntu
+docker run -d --name centos2 --hostname centos2 -p 2004:22 -p 8004:80 tektutor/ansible-ubuntu
+```
+
+### Testing ssh connection to the above containers
+```
+ssh -p 2001 root@localhost
+ssh -p 2002 root@localhost
+ssh -p 2003 root@localhost
+ssh -p 2004 root@localhost
+```
+

@@ -3,7 +3,7 @@
 ansible -i hosts ubuntu1 -m setup
 ```
 
-### Invoking adhco command when the ansible.cfg file points to the inventory file
+### Invoking ad-hoc command when the ansible.cfg file points to the inventory file
 ```
 ansible ubuntu1 -m setup
 ansible ubuntu -m setup
@@ -20,3 +20,13 @@ ansible-playbook -i hosts ping.yml
 ```
 ansible-playbook ping.yml
 ```
+
+### You may enable the verbosity optionally
+```
+ansible-playbook ping.yml -v
+ansible-playbook ping.yml -vv
+ansible-playbook ping.yml -vvv
+ansible-playbook ping.yml -vvvv
+```
+As you have noticed, the each additional v adds additional level of verbosity for debugging/troubleshooting purposes.
+For Unix/Linux you may try upto 4 levels of verbosity and the 5th level is meant for Windows ansible node.

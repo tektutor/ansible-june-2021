@@ -8,6 +8,8 @@ ansible -i hosts ubuntu1 -m setup
 ansible ubuntu1 -m setup
 ansible ubuntu -m setup
 ansible centos -m setup
+ansible all -m ping
+ansible all -m shell -a "hostname -i"
 ```
 In the above commands, 'ubuntu1' is an individual ansible node, whereas 'ubuntu' and 'centos' are group of ansible nodes.
 

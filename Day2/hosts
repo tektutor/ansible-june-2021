@@ -1,0 +1,13 @@
+[all]
+ubuntu1 ansible_user=root ansible_host=localhost ansible_port=2001 ansible_private_key_file=/root/.ssh/id_rsa
+ubuntu2 ansible_user=root ansible_host=localhost ansible_port=2002 ansible_private_key_file=/root/.ssh/id_rsa
+centos1 ansible_user=root ansible_host=localhost ansible_port=2003 ansible_private_key_file=/root/.ssh/id_rsa
+centos2 ansible_user=root ansible_host=localhost ansible_port=2004 ansible_private_key_file=/root/.ssh/id_rsa
+#aws-node ansible_user=root ansible_host=54.235.39.108 ansible_private_key_file=/root/.ssh/id_rsa
+#aws-container ansible_user=root ansible_port=2005 ansible_host=52.91.129.15 ansible_private_key_file=/root/.ssh/id_rsa
+
+[ubuntu]
+ubuntu[1:2]
+
+[centos]
+centos[1:2]

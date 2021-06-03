@@ -69,10 +69,10 @@ docker build -t tektutor/ansible-centos centos-ansible
 
 ### Creating containers
 ```
-docker run -d --name ubuntu1 --hostname ubuntu1 -p 2001:22 -p 8001:80 tektutor/ansible-ubuntu
-docker run -d --name ubuntu2 --hostname ubuntu2 -p 2002:22 -p 8002:80 tektutor/ansible-ubuntu
-docker run -d --name centos1 --hostname centos1 -p 2003:22 -p 8003:80 tektutor/ansible-ubuntu
-docker run -d --name centos2 --hostname centos2 -p 2004:22 -p 8004:80 tektutor/ansible-ubuntu
+docker run -d --name ubuntu1 --hostname ubuntu1 -p 2001:22 -p 8001:80 tektutor/ansible-ubuntu:latest
+docker run -d --name ubuntu2 --hostname ubuntu2 -p 2002:22 -p 8002:80 tektutor/ansible-ubuntu:latest
+docker run -d --name centos1 --hostname centos1 -p 2003:22 -p 8003:80 tektutor/ansible-centos:latest
+docker run -d --name centos2 --hostname centos2 -p 2004:22 -p 8004:80 tektutor/ansible-centos:latest
 ```
 
 ### Testing ssh connection to the above containers
@@ -83,3 +83,39 @@ ssh -p 2003 root@localhost
 ssh -p 2004 root@localhost
 ```
 
+### Creating static inventory file, you may name it as hosts
+```
+[all]
+ubuntu1 ansible_user=root ansible_host=localhost ansible_port=2001 ansible_private_key_file=/root/.ssh/id_rsa
+ubuntu2 ansible_user=root ansible_host=localhost ansible_port=2002 ansible_private_key_file=/root/.ssh/id_rsa
+centos1 ansible_user=root ansible_host=localhost ansible_port=2003 ansible_private_key_file=/root/.ssh/id_rsa
+centos2 ansible_user=root ansible_host=localhost ansible_port=2004 ansible_private_key_file=/root/.ssh/id_rsa
+
+[ubuntu]
+ubuntu[1:2]
+
+[centos]
+centos[1:2]
+
+```
+
+### Ansible ad-hoc 
+```
+ansible -i hosts all -m ping
+ansible -i hosts ubuntu1 -m ping -vvvv
+ansible -i hosts ubuntu -m ping
+ansible -i hosts centos -m ping
+```
+
+
+### What happens when you run the below command
+```
+ansible -i hosts ubuntu1 -m ping
+```
+
+1. First ansible will do an ssh to the ansible node "ubuntu1" using the details given in hosts inventory file.
+2. Ansible creates a temporary folder in ACM and Ansible node
+3. Ansible uses sftp/scp to copy the ping.py ansible module from ACM tmp to Ansible node tmp folder
+4. Ansible executes the copied ping.py on the Ansible Node and captures the output
+5. Ansible removes the tmp folder created locally in ACM and the Ansible Node
+6. Prints a summary of output in the ACM

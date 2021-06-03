@@ -1,7 +1,32 @@
 - name: This playbook will install nginx, configures it and deploys a custom html page.
   hosts: ubuntu 
 
+  vars:
+    - greeting_msg: DevOps!
+    - provisioner_tool: Docker
+  vars_files:
+    - my_var_file.yml
+
   tasks:
     - name: Install nginx in ubuntu ansible nodes
       apt: name=nginx state=latest update_cache=yes
 
+# Due to a known in issue in service module, service module won't start nginx service. This issue is limited to 
+# ubuntu Docker containers, hence we had to use shell, otherwise service is the recommened module.
+#   - name: Start the nginx service in ubuntu ansible nodes
+#     service: name=nginx state=started enabled=true
+
+    - name: Start the nginx service in ubuntu ansible nodes
+      shell: service nginx start
+
+    - name: Create custom web root folder in ubuntu ansible nodes
+      file: path=/var/html state=directory mode=0777
+
+    - name: Configure nginx web root folder in ubuntu ansible nodes
+      copy: src=default dest=/etc/nginx/sites-available/default backup=yes
+   
+    - name: Restart nginx server to apply config changes done above
+      shell: service nginx restart 
+
+    - name: Deploy custom html page into nginx on ubuntu ansible nodes
+      template: src=index.html.j2 dest=/var/html/index.html

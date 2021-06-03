@@ -28,5 +28,5 @@ ansible-playbook ping.yml -vv
 ansible-playbook ping.yml -vvv
 ansible-playbook ping.yml -vvvv
 ```
-As you have noticed, the each additional v adds additional level of verbosity for debugging/troubleshooting purposes.
-For Unix/Linux you may try upto 4 levels of verbosity and the 5th level is meant for Windows ansible node.
+As you have noticed, each additional 'v' adds additional level of verbosity for debugging/troubleshooting purposes.
+For Unix/Linux you may try upto 4 levels of verbosity and the 5th level is meant for Windows ansible node.  Anything more than 5 'v's are simply ignored by Ansible :)

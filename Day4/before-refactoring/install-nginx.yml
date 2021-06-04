@@ -1,5 +1,5 @@
 - name: This playbook will install nginx, configures it and deploys a custom html page.
-  hosts: ubuntu 
+  hosts: all 
 
   gather_facts: yes 
 
@@ -12,11 +12,6 @@
   tasks:
     - name: Install nginx in ubuntu ansible nodes
       apt: name=nginx state=latest update_cache=yes
-
-# Due to a known in issue in service module, service module won't start nginx service. This issue is limited to 
-# ubuntu Docker containers, hence we had to use shell, otherwise service is the recommened module.
-#   - name: Start the nginx service in ubuntu ansible nodes
-#     service: name=nginx state=started enabled=true
 
     - name: Start the nginx service in ubuntu ansible nodes
       shell: service nginx start

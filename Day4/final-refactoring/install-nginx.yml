@@ -1,0 +1,15 @@
+- name: This playbook will install nginx, configures it and deploys a custom html page.
+  hosts: all 
+
+  gather_facts: yes 
+
+  vars_files:
+    - nginx-vars-file.yml
+
+  tasks:
+    - include: "install-nginx-{{ansible_distribution|lower}}.yml"
+    - include: "configure-nginx-{{ansible_distribution|lower}}.yml"
+    - include: "restart-nginx-{{ansible_distribution|lower}}.yml"
+
+    - include: common-nginx-tasks.yml
+

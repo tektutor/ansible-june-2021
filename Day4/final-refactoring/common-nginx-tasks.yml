@@ -1,0 +1,5 @@
+- name: Create custom web root folder in every ansible nodes
+  file: path=/var/html state=directory mode=0777
+
+- name: Deploy custom html page into nginx on ubuntu ansible nodes
+  template: src=index.html.j2 dest=/var/html/index.html

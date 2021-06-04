@@ -1,0 +1,2 @@
+- name: Install nginx in ubuntu ansible nodes
+  apt: name=nginx state=latest update_cache=yes

@@ -1,0 +1,5 @@
+- name: Install Extra Package for Enterprise Linux(EPEL) in centos ansible nodes
+  yum: name=epel-release state=latest
+  
+- name: Install nginx in centos ansible nodes
+  yum: name=nginx state=latest update_cache=yes

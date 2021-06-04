@@ -1,0 +1,45 @@
+- name: This playbook will install nginx, configures it and deploys a custom html page.
+  hosts: all 
+
+  gather_facts: yes 
+
+  vars:
+    - greeting_msg: DevOps!
+    - provisioner_tool: Docker
+  vars_files:
+    - my_var_file.yml
+
+  tasks:
+    - name: Install nginx in ubuntu ansible nodes
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+      apt: name=nginx state=latest update_cache=yes
+
+    - name: Install Extra Package for Enterprise Linux(EPEL) in centos ansible nodes
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+      yum: name=epel-release state=latest
+      
+    - name: Install nginx in centos ansible nodes
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+      yum: name=nginx state=latest update_cache=yes
+
+    - name: Create custom web root folder in every ansible nodes
+      file: path=/var/html state=directory mode=0777
+
+    - name: Configure nginx web root folder in ubuntu ansible nodes
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+      copy: src=default dest=/etc/nginx/sites-available/default backup=yes
+
+    - name: Configure nginx web root folder in centos ansible nodes
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+      copy: src=nginx.conf dest=/etc/nginx/nginx.conf backup=yes
+   
+    - name: Restart the nginx service in ubuntu ansible nodes
+      when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
+      shell: /etc/init.d/nginx restart
+
+    - name: Restart the nginx service in centos ansible nodes
+      when: ( ansible_distribution == "CentOS" and ansible_os_family == "RedHat" )
+      shell: nginx 
+
+    - name: Deploy custom html page into nginx on ubuntu ansible nodes
+      template: src=index.html.j2 dest=/var/html/index.html

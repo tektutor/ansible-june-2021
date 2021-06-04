@@ -1,5 +1,6 @@
 - name: First Play 
   hosts: ubuntu 
+  gather_facts: no
 
   tasks:
     - name: Ping the ubuntu ansible node
@@ -7,6 +8,7 @@
 
 - name: Second Play 
   hosts: centos 
+  gather_facts: no
 
   tasks:
     - name: Ping the centos ansible node

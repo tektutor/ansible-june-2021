@@ -1,0 +1,3 @@
+- name: Restart the nginx service in centos ansible nodes
+  shell: nginx 
+  ignore_errors: yes

@@ -1,3 +1,0 @@
-- name: Install nginx in ubuntu ansible nodes
-  when: ( ansible_distribution == "Ubuntu" and ansible_os_family == "Debian" )
-  apt: name=nginx state=latest update_cache=yes

@@ -32,3 +32,11 @@ ansible-playbook ping.yml -vvvv
 ```
 As you have noticed, each additional 'v' adds additional level of verbosity for debugging/troubleshooting purposes.
 For Unix/Linux you may try upto 4 levels of verbosity and the 5th level is meant for Windows ansible node.  Anything more than 5 'v's are simply ignored by Ansible :)
+
+
+### You may now access the nginx web pages
+```
+curl http://172.17.0.2:80
+curl http://172.17.0.3
+```
+The assuption is 172.17.0.2 and 172.17.0.3 are the IP Addresses of your ubuntu containers. This may be different in your system.

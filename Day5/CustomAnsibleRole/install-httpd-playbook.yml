@@ -1,0 +1,5 @@
+- name: Demonstrates invoking your custom ansible role
+  hosts: all
+
+  roles:
+    - httpd

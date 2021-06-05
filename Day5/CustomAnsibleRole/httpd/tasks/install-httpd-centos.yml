@@ -1,0 +1,5 @@
+- name: Install Extra Packages For Enterprise Linux (EPEL)
+  yum: name=epel-release state=latest update_cache=yes
+
+- name: Install httpd in CentOS
+  yum: name=httpd state=latest update_cache=yes

@@ -1,0 +1,26 @@
+- name: Provision ansible nodes
+  hosts: localhost
+  tasks:
+    - name: Provision ubuntu ansible  nodes
+      docker_container:
+          docker_host: tcp://localhost:4243
+          image: tektutor/ansible-ubuntu-node:latest
+          name: "ubuntu{{item}}"
+          hostname: "ubuntu{{item}}"
+          state: started
+          ports:
+            - "8{{item}}:80"
+            - "2{{item}}:22"
+      with_sequence: start=1 end=2 format="%03d"
+
+    - name: Provision centos ansible  nodes
+      docker_container:
+          docker_host: tcp://localhost:4243
+          image: tektutor/ansible-centos-node:latest
+          name: "centos{{item}}"
+          hostname: "centos{{item}}"
+          state: started
+          ports:
+            - "9{{item}}:80"
+            - "3{{item}}:22"
+      with_sequence: start=1 end=2 format="%03d"

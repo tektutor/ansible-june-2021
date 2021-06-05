@@ -1,0 +1,4 @@
+- name: Configure httpd and grant perssion to custom web root folder in CentOS
+  copy: src=httpd.conf dest=/etc/httpd/conf/httpd.conf
+  notify:
+     - Restart httpd in CentOS

@@ -1,0 +1,9 @@
+- name: Configure httpd in Ubuntu
+  copy: src=apache2.conf dest=/etc/apache2/apache2.conf mode=0777
+  notify:
+     - Restart httpd in Ubuntu
+
+- name: Grant perssion to custom document root folder in Ubuntu
+  copy: src=000-default.conf dest=/etc/apache2/sites-available/000-default.conf mode=0777
+  notify:
+     - Restart httpd in Ubuntu

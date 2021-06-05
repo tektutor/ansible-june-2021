@@ -1,3 +1,44 @@
+- name: Provision ansible nodes
+  hosts: localhost
+  tasks:
+
+     - name: Install Docker Python Module 
+       shell: python -m pip install --upgrade pip && pip3 install docker 
+       tags:
+         - install 
+       ignore_errors: yes
+
+     - name: Create ubuntu ansible nodes
+       docker_container:
+          docker_host: tcp://localhost:4243
+          image: tektutor/ansible-ubuntu-node:latest
+          name: "ubuntu{{item}}"
+          hostname: "ubuntu{{item}}"
+          state: started
+          pull: false
+          ports:
+             - "2{{item}}:22"
+             - "8{{item}}:80"
+       with_sequence: start=1 end=2 format="%03d"
+       tags:
+         - provision
+
+     - name: Create centos ansible nodes
+       docker_container:
+          docker_host: tcp://localhost:4243
+          image: tektutor/ansible-centos-node:latest
+          name: "centos{{item}}"
+          hostname: "centos{{item}}"
+          state: started
+          pull: false
+          ports:
+             - "3{{item}}:22"
+             - "9{{item}}:80"
+       with_sequence: start=1 end=2 format="%03d"
+       tags:
+         - provision
+
+
 - name: This playbook will install nginx, configures it and deploys a custom html page.
   hosts: all 
 
@@ -12,4 +53,30 @@
     - include: "restart-nginx-{{ansible_distribution|lower}}.yml"
 
     - include: common-nginx-tasks.yml
+
+- name: Test nginx deployments
+  hosts: localhost
+
+  tasks:
+     - name: Access ubuntu nginx custom pages
+       shell: "curl http://localhost:800{{item}}"
+       with_sequence: start=1 end=2
+       register: output
+       tags: 
+         - test
+
+     - debug: var=output
+       tags:
+         - test
+
+     - name: Access centos nginx custom pages
+       shell: "curl http://localhost:900{{item}}"
+       with_sequence: start=1 end=2
+       register: output
+       tags: 
+         - test
+
+     - debug: var=output
+       tags:
+         - test
 

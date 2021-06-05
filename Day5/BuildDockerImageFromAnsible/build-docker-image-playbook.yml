@@ -1,0 +1,38 @@
+- name: This playbook will automate the docker image build process
+  hosts: localhost
+
+  tasks:
+    - name: Remove all containers
+      shell: docker rm -f $(docker ps  -aq)
+      ignore_errors: yes
+
+    - name: Remove existing tektutor ubuntu images
+      shell: docker rmi tektutor/ansible-ubuntu-node:latest
+      ignore_errors: yes
+
+    - name: Remove existing tektutor centos images
+      shell: docker rmi tektutor/ansible-centos-node:latest
+      ignore_errors: yes
+
+    - name: Build tektutor ubuntu ansible image
+      docker_image:
+         docker_host:  tcp://localhost:4243
+         name: "tektutor/ansible-ubuntu-node:latest"
+         build:
+           path: .
+           dockerfile: UbuntuDockerfile
+           rm: yes
+         source: build
+         state: present
+
+    - name: Build tektutor centos ansible image
+      docker_image:
+         docker_host:  tcp://localhost:4243
+         name: "tektutor/ansible-centos-node:latest"
+         build:
+           path: .
+           dockerfile: CentOSDockerfile
+         source: build
+         state: present
+
+
